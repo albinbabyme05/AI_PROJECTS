@@ -1,0 +1,87 @@
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Python bytecode / cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+.env/
+.python-version
+
+# --- Environment & secrets (Flask) ---
+.env
+.env.*
+.flaskenv
+.flaskenv.*
+
+# Flask instance folder (holds secrets/db by default)
+instance/
+
+# --- Logs & PIDs ---
+*.log
+logs/
+*.pid
+
+# --- Build / distribution ---
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Testing / Coverage ---
+.pytest_cache/
+.coverage*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+
+# --- Type checking / linters ---
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- Editors / IDEs ---
+.vscode/
+.idea/
+*.sublime-*
+.history/
+.ropeproject
+
+# --- C extensions ---
+*.so
+
+# --- Databases (SQLite) ---
+*.sqlite3
+*.sqlite
+*.db
+
+# --- Node / Frontend (if you have a frontend build) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# --- Caches ---
+.cache/
+
+# --- Optional: trained models/artifacts ---
+# Uncomment if you don't want to commit model files
+# model/*.pkl
+# model/*.joblib
+# model/*.onnx

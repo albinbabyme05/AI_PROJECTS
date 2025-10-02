@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FWI Prediction</title>
+
+  <!-- (Optional) Bootstrap, but layout uses pure CSS Grid -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #0d6efd;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #f5f7fb;
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+
+    /* Center the app and avoid scrolling on common laptop/desktop sizes */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(1100px, 96vw);          /* wide but stays inside viewport */
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+      padding: 20px 22px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .subtitle {
+      font-size: .95rem;
+      color: var(--muted);
+    }
+
+    /* Compact grid: auto-fit makes it responsive without scrolling on desktop */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px 16px;   /* row / col gap */
+      align-items: start;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+    label {
+      font-size: .9rem;
+      font-weight: 600;
+    }
+    input, select {
+      height: 40px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(13,110,253,.15);
+    }
+
+    /* Make the action row span full width */
+    .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      height: 44px;
+      padding: 0 18px;
+      font-weight: 600;
+    }
+
+    /* Result badge */
+    .result {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      padding: 10px 12px;
+      background: #eef6ff;
+      border: 1px solid #d6e9ff;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    /* Tighten vertical space a bit more on short screens */
+    @media (min-height: 700px) {
+      .card { padding: 24px 26px; }
+      .card-header { margin-bottom: 14px; }
+    }
+
+    /* If you absolutely must avoid scroll on 768p laptops, reduce gaps a bit */
+    @media (max-height: 800px) {
+      .grid { gap: 12px 14px; }
+      input, select { height: 38px; }
+      .btn-primary { height: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="card-header">
+        <div class="title">🔥 FWI Prediction</div>
+      </div>
+
+      <form class="grid" action="{{ url_for('predict') }}" method="post">
+        <div class="field">
+          <label for="Temperature">Temperature (°C)</label>
+          <input id="Temperature" name="Temperature" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="RH">Relative Humidity (RH %)</label>
+          <input id="RH" name="RH" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="Ws">Wind Speed (Ws)</label>
+          <input id="Ws" name="Ws" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="Rain">Rain (mm)</label>
+          <input id="Rain" name="Rain" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="FFMC">FFMC</label>
+          <input id="FFMC" name="FFMC" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="DMC">DMC</label>
+          <input id="DMC" name="DMC" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="DC">DC</label>
+          <input id="DC" name="DC" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="ISI">ISI</label>
+          <input id="ISI" name="ISI" type="text" step="any" required placeholder="">
+        </div>
+
+        <div class="field">
+          <label for="Classes">Classes</label>
+          <input id="Classes" name="Classes" type="text" required placeholder="">
+          
+        </div>
+
+        <div class="field">
+          <label for="Region">Region</label>
+          <input id="Region" name="Region" type="text" required placeholder="">
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">🚀 Predict</button>
+        </div>
+
+        
+        <div class="result">
+          Prediction: <span class="text-primary">{{ results }}</span>
+        </div>
+      
+      </form>
+    </div>
+  </div>
+</body>
+</html>
