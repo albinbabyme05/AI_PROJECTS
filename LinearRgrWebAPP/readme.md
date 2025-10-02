@@ -1,4 +1,4 @@
-cat > README.md << 'EOF'
+
 # FWI Prediction (Flask + scikit-learn)
 
 A minimal Flask web app that predicts **Fire Weather Index (FWI)** from 10 inputs using a scikit-learn regression model with a `StandardScaler`.  
